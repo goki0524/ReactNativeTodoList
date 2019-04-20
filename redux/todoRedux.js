@@ -1,23 +1,23 @@
 import {  
-    combineReducers,
-    createStore,
+  combineReducers,
+  createStore,
 } from 'redux'
 
 
 
 // actions.js
 export const deleteTodo = () => ({  
-    type: 'DELETE_TODO',
-    name: ''
+  type: 'DELETE_TODO',
+  name: ''
 })
 
 export const setTodo = name => ({  
-    type: 'ADD_TODO',
-    name: name,
+  type: 'ADD_TODO',
+  name: name,
 })
 
 INITIAL_STATE = {
-    name: 'Todo 1'
+  name: 'Todo 1'
 }
 
 
