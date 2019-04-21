@@ -1,3 +1,5 @@
+import { createStore } from 'redux'
+
 const types = {
   ADD_ITEM: 'ADD_ITEM',
   REMOVE_ITEM: 'REMOVE_ITEM',
@@ -63,3 +65,7 @@ export const reducer = (state = initialState, action) => {
     }
   }
 }
+
+export const store = createStore(reducer)
+
+console.table(store.getState)

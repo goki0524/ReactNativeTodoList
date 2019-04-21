@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import {
   View,
   Text,
@@ -7,9 +8,9 @@ import {
   TouchableOpacity
 } from 'react-native'
 
-import CheckBox from './CheckBox'
+import Checkbox from './Checkbox'
 
-export default class List extends Comment {
+export default class List extends Component {
 
   static propTypes = {
     items: PropTypes.array.isRequired,
@@ -25,7 +26,7 @@ export default class List extends Comment {
       <View key={i} style={itemStyle}>
         <Text>{item.label}</Text>
         <View style={styles.rightSection}>
-          <CheckBox
+          <Checkbox
             isChecked={item.completed}
             onToggle={() => onToggleItemCompleted(i)}
           />

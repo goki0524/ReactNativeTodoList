@@ -1,8 +1,8 @@
 import React from 'react'
 import { Platform, StatusBar, StyleSheet, View } from 'react-native'
-import { Provider } from 'react-redux'
 import { AppLoading, Asset, Font, Icon } from 'expo'
 import AppNavigator from './navigation/AppNavigator'
+import { Provider } from 'react-redux'
 import { store } from './redux/todoRedux'
 
 export default class App extends React.Component {

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { TextInput, StyleSheet } from 'react-native'
 
 export default class Input extends Component {
@@ -7,27 +8,26 @@ export default class Input extends Component {
     onSubmit: PropTypes.func,
     placeholder: PropTypes.string,
   }
-  
+
   state = {
     text: '',
   }
 
-  onChangeText = text => {
-    // this.setState({text: text})
+  onChangeText = (text) => {
     this.setState({text})
   }
 
   onSubmitEditing = () => {
     const {onSubmit} = this.props
-    const {text} = this.props
+    const {text} = this.state
 
-    if(!text) return
+    if (!text) return
 
     onSubmit(text)
     this.setState({text: ''})
   }
 
-  render () {
+  render() {
     const {onSubmit, placeholder} = this.props
     const {text} = this.state
 

@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import {
   Image,
   Platform,
@@ -8,30 +9,72 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { connect } from 'react-redux'
-import { store, setTodo, deleteTodo } from '../redux/todoRedux'
 import { WebBrowser } from 'expo'
 import { MonoText } from '../components/StyledText'
+import { connect } from 'react-redux'
+import { actionCreators } from '../redux/todoRedux'
+import Title from '../components/Title'
+import Input from '../components/Input'
+import List from '../components/List'
+import Footer from '../components/Footer'
 
-export class HomeScreen extends React.Component {
+
+const mapStateToProps = (state) => ({
+  items: state.items,
+})
+
+export class HomeScreen extends Component {
+
   static navigationOptions = {
     header: null,
   }
 
+  static propTypes = {
+    items: PropTypes.array.isRequired,
+    dispatch: PropTypes.func.isRequired,
+  }
+
+  addItem = (item) => {
+    const {dispatch} = this.props
+    dispatch(actionCreators.addItem(item))
+  }
+
+  removeItem = (index) => {
+    const {dispatch} = this.props
+    dispatch(actionCreators.removeItem(index))
+  }
+
+  toggleItemCompleted = (index) => {
+    const {dispatch} = this.props
+    dispatch(actionCreators.toggleItemCompleted(index))
+  }
+
+  removeCompleted = () => {
+    const {dispatch} = this.props
+    dispatch(actionCreators.removeCompleted())
+  }
+
   render() {
+    const {items} = this.props
+
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
+          <Title> Todo List </Title>
+          <Input
+            placeholder={'Enter an item!'}
+            onSubmit={this.addItem}
+          />
+          <View style={styles.divider}/>
+          <List
+            items={items}
+            onRemoveItem={this.removeItem}
+            onToggleItemCompleted={this.toggleItemCompleted}
+          />
+          <View style={styles.divider} />
+          <Footer onRemoveCompleted={this.removeCompleted} />
         </ScrollView>
 
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
-
-          <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}>navigation/MainTabNavigator.js</MonoText>
-          </View>
-        </View>
       </View>
     )
   }
@@ -70,21 +113,17 @@ export class HomeScreen extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  todo:  state.todo.name
-})
+export default connect(mapStateToProps)(HomeScreen)
 
-const mapDispatchToProps = {
-  setTodo,
-  deleteTodo
-}
-
-export default connect(mapStateToProps,mapDispatchToProps)(HomeScreen)
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: 'whitesmoke',
   },
   developmentModeText: {
     marginBottom: 20,
