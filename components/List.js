@@ -15,16 +15,16 @@ export default class List extends Component {
   static propTypes = {
     items: PropTypes.array.isRequired,
     onRemoveItem: PropTypes.func.isRequired,
-    onToggleItemCompleted: PropTypes.func.isRequired
+    onToggleItemCompleted: PropTypes.func.isRequired,
   }
 
-  renderItem (item, i) {
-    const {onRemoveItem, onToggleItemCompleted} = this.props
+  renderItem = (item, i) => {
+    const {onToggleItemCompleted, onRemoveItem} = this.props
     const itemStyle = item.completed ? [styles.item, styles.completed] : styles.item
 
     return (
       <View key={i} style={itemStyle}>
-        <Text>{item.label}</Text>
+        <Text> {item.label} </Text>
         <View style={styles.rightSection}>
           <Checkbox
             isChecked={item.completed}
@@ -38,7 +38,7 @@ export default class List extends Component {
     )
   }
 
-  render () {
+  render() {
     const {items} = this.props
 
     return (
