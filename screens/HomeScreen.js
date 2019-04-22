@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import {
   Image,
   Platform,
@@ -7,61 +8,75 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from 'react-native';
-import { WebBrowser } from 'expo';
+} from 'react-native'
+import { WebBrowser } from 'expo'
+import { MonoText } from '../components/StyledText'
+import { connect } from 'react-redux'
+import { actionCreators } from '../redux/todoRedux'
+import Title from '../components/Title'
+import Input from '../components/Input'
+import List from '../components/List'
+import Footer from '../components/Footer'
 
-import { MonoText } from '../components/StyledText';
 
-export default class HomeScreen extends React.Component {
+const mapStateToProps = (state) => ({
+  items: state.items,
+})
+
+export class HomeScreen extends Component {
+
   static navigationOptions = {
     header: null,
-  };
+  }
+
+  static propTypes = {
+    items: PropTypes.array.isRequired,
+    dispatch: PropTypes.func.isRequired,
+  }
+
+  addItem = (item) => {
+    const {dispatch} = this.props
+    dispatch(actionCreators.addItem(item))
+  }
+
+  removeItem = (index) => {
+    const {dispatch} = this.props
+    dispatch(actionCreators.removeItem(index))
+  }
+
+  toggleItemCompleted = (index) => {
+    const {dispatch} = this.props
+    dispatch(actionCreators.toggleItemCompleted(index))
+  }
+
+  removeCompleted = () => {
+    const {dispatch} = this.props
+    dispatch(actionCreators.removeCompleted())
+  }
 
   render() {
+    const {items} = this.props
+
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
-          </View>
-
-          <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
-
-            <Text style={styles.getStartedText}>Get started by opening</Text>
-
-            <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-              <MonoText style={styles.codeHighlightText}>screens/HomeScreen.js</MonoText>
-            </View>
-
-            <Text style={styles.getStartedText}>
-              Change this text and your app will automatically reload.
-            </Text>
-          </View>
-
-          <View style={styles.helpContainer}>
-            <TouchableOpacity onPress={this._handleHelpPress} style={styles.helpLink}>
-              <Text style={styles.helpLinkText}>Help, it didn’t automatically reload!</Text>
-            </TouchableOpacity>
-          </View>
+          <Title> Todo List </Title>
+          <Input
+            placeholder={'Enter an item!'}
+            onSubmit={this.addItem}
+          />
+          <View style={styles.divider}/>
+          <List
+            items={items}
+            onRemoveItem={this.removeItem}
+            onToggleItemCompleted={this.toggleItemCompleted}
+          />
+          <View style={styles.divider} />
+          <Footer onRemoveCompleted={this.removeCompleted} />
         </ScrollView>
 
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
-
-          <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}>navigation/MainTabNavigator.js</MonoText>
-          </View>
-        </View>
       </View>
-    );
+    )
   }
 
   _maybeRenderDevelopmentModeWarning() {
@@ -88,20 +103,27 @@ export default class HomeScreen extends React.Component {
   }
 
   _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  };
+    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode')
+  }
 
   _handleHelpPress = () => {
     WebBrowser.openBrowserAsync(
       'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
+    )
+  }
 }
+
+export default connect(mapStateToProps)(HomeScreen)
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: 'whitesmoke',
   },
   developmentModeText: {
     marginBottom: 20,
@@ -185,4 +207,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#2e78b7',
   },
-});
+})
