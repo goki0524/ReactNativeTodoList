@@ -5,15 +5,15 @@ import { TouchableOpacity, Text, StyleSheet } from 'react-native'
 export default class Footer extends Component {
 
   static propTypes = {
-    onRemovedCompleted: PropTypes.func,
+    onRemoveCompleted: PropTypes.func,
   }
 
   render() {
-    const {onRemovedCompleted} = this.props
+    const {onRemoveCompleted} = this.props
 
     return (
       <TouchableOpacity 
-        onPress={onRemovedCompleted}
+        onPress={onRemoveCompleted}
         style={styles.footer}
       >
         <Text style={styles.remove}>Removed completed items</Text>
